@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: theme('colors.bg');
+  color: theme('colors.text.DEFAULT');
+  font-family: theme('fontFamily.body');
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: theme('fontFamily.heading');
+  font-weight: 600;
+  margin: 0;
+}
+
+@layer components {
+  .card {
+    @apply flex flex-col gap-2 rounded-md bg-surface p-3;
+  }
+  .card-elev {
+    @apply shadow-elev;
+  }
+  .card-kicker {
+    @apply text-[10px] tracking-[0.1em] uppercase text-accent;
+  }
+  .card-title {
+    @apply font-heading font-medium leading-tight text-[17px];
+  }
+  .card-meta {
+    @apply flex items-center gap-1.5 text-[11px] text-text-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md border border-transparent bg-transparent px-4 font-heading text-sm text-text cursor-pointer transition-colors;
+  }
+  .btn:disabled {
+    @apply opacity-45 cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply text-accent border-accent active:bg-accent-soft;
+  }
+  .btn-secondary {
+    @apply border-divider active:bg-white/10;
+  }
+  .btn-ghost {
+    @apply text-accent border-transparent active:bg-accent-soft;
+  }
+  .btn-icon {
+    @apply w-9 h-9 p-0;
+  }
+  .btn-block {
+    @apply w-full;
+  }
+
+  .field label {
+    @apply block text-[12px] mb-1 text-text-muted;
+  }
+  .input {
+    @apply w-full min-h-9 px-2.5 py-1.5 text-sm text-text bg-surface-alt border border-divider rounded-md outline-none;
+  }
+  .input:focus {
+    @apply border-accent;
+  }
+
+  .tag {
+    @apply inline-flex items-center text-[11px] tracking-wide px-2.5 py-0.5 rounded;
+  }
+  .tag-accent {
+    @apply bg-accent text-bg;
+  }
+  .tag-neutral {
+    @apply bg-neutral-800 text-text;
+  }
+  .tag-outline {
+    @apply border border-accent text-accent bg-transparent;
+  }
+
+  .dialog-backdrop {
+    @apply fixed inset-0 grid place-items-center p-4 bg-black/60 z-50;
+  }
+  .dialog {
+    @apply w-full flex flex-col gap-3 p-4 rounded-lg bg-surface-alt shadow-elev;
+  }
+  .dialog-title {
+    @apply font-heading font-medium text-xl;
+  }
+  .dialog-actions {
+    @apply flex justify-end gap-2 mt-2;
+  }
+
+  .hr {
+    @apply h-px my-3 bg-divider;
+  }
+}
+
+/* Hide scrollbars on the app's internal scroll areas without disabling scroll. */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
