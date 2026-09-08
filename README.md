@@ -37,6 +37,34 @@ npm install
 npm run dev
 ```
 
+## Android app
+
+The web app is wrapped as a native Android app with
+[Capacitor](https://capacitorjs.com/) (see `android/`, `capacitor.config.ts`).
+The run/walk tracker uses the same `navigator.geolocation` API as the web
+build — Capacitor's WebView bridge handles the Android runtime permission
+prompt automatically (`ACCESS_FINE_LOCATION` / `ACCESS_COARSE_LOCATION`,
+declared in `android/app/src/main/AndroidManifest.xml`), so no extra native
+plugin is needed for GPS tracking.
+
+**Get a build without any local setup:** push to a `claude/**` branch (or
+run the "Build Android APK" workflow manually from the Actions tab). It
+builds `app-debug.apk` and attaches it to the workflow run as a downloadable
+artifact.
+
+**Build locally** (requires Android Studio / the Android SDK):
+
+```bash
+npm run android        # builds the web app with a relative base path and
+                        # runs `cap sync android`
+cd android
+./gradlew assembleDebug  # -> android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Open the `android/` folder in Android Studio instead of using Gradle
+directly if you want to run on a device/emulator or build a signed release
+APK/AAB for the Play Store.
+
 ## Deployment
 
 Pushing to this repo's default branch (or any `claude/**` branch) builds and

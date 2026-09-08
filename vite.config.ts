@@ -2,7 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// Served from GitHub Pages at https://<owner>.github.io/8limbsFC-App/
+// Served from GitHub Pages at https://<owner>.github.io/8limbsFC-App/.
+// Native builds (Capacitor) load from the device filesystem, so they need a
+// relative base — set VITE_BASE_PATH=./ when building for Android/iOS.
 const base = process.env.VITE_BASE_PATH ?? '/8limbsFC-App/'
 
 export default defineConfig({
