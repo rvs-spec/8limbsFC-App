@@ -4,6 +4,7 @@ import { useApp } from '../../lib/store'
 
 export function Welcome() {
   const go = useApp((s) => s.go)
+  const signInWithApple = useApp((s) => s.signInWithApple)
 
   return (
     <div className="h-full flex flex-col justify-center px-7 pt-6 pb-10 gap-7 overflow-auto no-scrollbar">
@@ -21,14 +22,19 @@ export function Welcome() {
         </p>
       </div>
       <div className="flex flex-col gap-3.5">
-        <Button variant="secondary" block className="h-11" onClick={() => go('ob-1')}>
+        <Button variant="secondary" block className="h-11" onClick={signInWithApple}>
           Continue with Apple
         </Button>
-        <Button variant="primary" block className="h-11" onClick={() => go('ob-1')}>
+        <Button variant="primary" block className="h-11" onClick={() => go('auth')}>
           Continue with Email
         </Button>
       </div>
-      <p className="text-center text-[10.5px] text-text-faint m-0">30-day free trial · No commitment · Sign in</p>
+      <p className="text-center text-[10.5px] text-text-faint m-0">
+        30-day free trial · No commitment ·{' '}
+        <button className="underline" onClick={() => go('auth')}>
+          Sign in
+        </button>
+      </p>
     </div>
   )
 }

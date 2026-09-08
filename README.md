@@ -19,8 +19,15 @@ just open the site in Safari on iPhone and add it to the home screen.
   delay + seeded ingredients) — wiring it to a real vision/AI model is a
   follow-up.
 - **Account** — profile, goals/macros summary, notifications toggle.
+- **Auth + persisted dashboard** — real email/password accounts via
+  [Supabase](https://supabase.com/) Auth. Your plan, run/walk history,
+  workout sessions and today's meals are stored in Postgres (RLS-scoped to
+  your own `auth.uid()`), not `localStorage` — sign in on another device and
+  it's all there.
 
-All state is kept on-device in `localStorage` — there is no backend yet.
+Still placeholder / needs a real integration: USDA nutrition-database
+lookup, Open Food Facts barcode scanning, and fridge-photo ingredient
+recognition — each needs its own API key/vendor and hasn't been wired yet.
 
 ## Installing on your iPhone
 
@@ -30,10 +37,46 @@ All state is kept on-device in `localStorage` — there is no backend yet.
 3. Launch it from the home screen icon — it runs full-screen, like a native
    app, and works offline after the first load.
 
+## Backend setup (Supabase)
+
+The app needs a Supabase project for auth and data — it won't work without
+one (auth calls will fail with network errors, and the UI shows a console
+warning if the env vars below are missing).
+
+1. Create a free project at [supabase.com](https://supabase.com/dashboard).
+2. Run `supabase/migrations/0001_init.sql` against it — paste it into the
+   project's **SQL Editor** and run, or `supabase db push` with the
+   [Supabase CLI](https://supabase.com/docs/guides/cli) linked to the project.
+3. Deploy the account-deletion function (needs the CLI):
+   ```bash
+   supabase functions deploy delete-account --project-ref <your-project-ref>
+   ```
+   (It reads the project's built-in `SUPABASE_URL` / `SUPABASE_ANON_KEY` /
+   `SUPABASE_SERVICE_ROLE_KEY` — no extra secrets to set.)
+4. From **Settings → API**, copy the **Project URL** and **anon public**
+   key into `.env.local` (copy `.env.example` as a starting point):
+   ```
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```
+5. For CI (GitHub Pages deploy + Android APK build) to produce working
+   builds, add the same two values as **repository secrets** — Settings →
+   Secrets and variables → Actions → New repository secret — named
+   `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`.
+
+By default, Supabase requires confirming the sign-up email before a session
+is issued (the app shows a "check your email" screen in that case) — turn
+this off in **Authentication → Providers → Email** during development if
+you'd rather skip it. Apple sign-in needs its own setup in **Authentication
+→ Providers → Apple** (and an Apple Developer account) before that button
+does anything; until then it fails with a visible error and email/password
+still works.
+
 ## Development
 
 ```bash
 npm install
+cp .env.example .env.local   # fill in your Supabase project's URL + anon key
 npm run dev
 ```
 

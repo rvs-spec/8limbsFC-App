@@ -1,5 +1,6 @@
 export type Screen =
   | 'ob-welcome'
+  | 'auth'
   | 'ob-1'
   | 'ob-2'
   | 'ob-3'
@@ -25,7 +26,6 @@ export type Activity = 'light' | 'moderate' | 'active'
 
 export interface Onboarding {
   name: string
-  email: string
   heightCm: number
   weightKg: number
   age: number
@@ -118,3 +118,5 @@ export interface FridgeState {
   ingredients: FridgeIngredient[]
   capturing: boolean
 }
+
+export type AuthStatus = 'loading' | 'signedOut' | 'signedIn'

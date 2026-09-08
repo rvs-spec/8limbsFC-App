@@ -1,9 +1,10 @@
-import type { ReactElement } from 'react'
+import { useEffect, type ReactElement } from 'react'
 import { TabBar } from './components/TabBar'
 import { useApp } from './lib/store'
 import type { Screen } from './lib/types'
 
 import { Welcome } from './screens/onboarding/Welcome'
+import { Auth } from './screens/onboarding/Auth'
 import { AboutYou } from './screens/onboarding/AboutYou'
 import { Measurements } from './screens/onboarding/Measurements'
 import { GoalActivity } from './screens/onboarding/GoalActivity'
@@ -25,6 +26,7 @@ import { Account } from './screens/Account'
 
 const SCREENS: Record<Screen, () => ReactElement | null> = {
   'ob-welcome': Welcome,
+  auth: Auth,
   'ob-1': AboutYou,
   'ob-2': Measurements,
   'ob-3': GoalActivity,
@@ -58,6 +60,23 @@ const TAB_SCREENS: Screen[] = [
 
 function App() {
   const screen = useApp((s) => s.screen)
+  const authStatus = useApp((s) => s.authStatus)
+  const initAuth = useApp((s) => s.initAuth)
+
+  useEffect(() => {
+    initAuth()
+    // initAuth subscribes for the app's lifetime; only needs to run once.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (authStatus === 'loading') {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-bg text-text-muted font-body">
+        Loading…
+      </div>
+    )
+  }
+
   const ScreenComponent = SCREENS[screen]
 
   return (

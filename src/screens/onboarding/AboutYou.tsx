@@ -11,7 +11,7 @@ export function AboutYou() {
       <div className="card-meta">Step 1 of 3</div>
       <div>
         <h3>Let's start with you</h3>
-        <p className="text-text-muted text-[12.5px] mt-1">Just a name and an email — we keep this short.</p>
+        <p className="text-text-muted text-[12.5px] mt-1">Just your name — we keep this short.</p>
       </div>
       <div className="flex flex-col gap-3.5">
         <Field label="Full name">
@@ -20,15 +20,6 @@ export function AboutYou() {
             value={onboarding.name}
             onChange={(e) => setObField('name', e.target.value)}
             placeholder="Jaime"
-          />
-        </Field>
-        <Field label="Email address">
-          <input
-            className="input"
-            type="email"
-            value={onboarding.email}
-            onChange={(e) => setObField('email', e.target.value)}
-            placeholder="you@8limbsfc.com"
           />
         </Field>
       </div>
